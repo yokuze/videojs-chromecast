@@ -72,14 +72,15 @@ ChromecastSessionManager = Class.extend({
    _reloadTech: function() {
       var player = this.player,
           currentTime = player.currentTime(),
-          wasPaused = player.paused();
+          wasPaused = player.paused(),
+          sources = player.currentSources();
 
       // Reload the current source to re-lookup and use the currently available Tech. The
       // chromecast Tech gets used if `ChromecastSessionManager.isChromecastConnected` is
       // true (effectively, if a chromecast session is currently in progress), otherwise
       // Video.js continues to search through the Tech list for other eligible Tech to
       // use, such as the HTML5 player.
-      player.src({
+      player.src(sources);/*{
          // NOTE: we cannot use 'player.currentSource()' here to get both the `src` URL
          // and the `type` (mimetype) because of a bug in the Video.js player that sets
          // `this.cache_.currentSource` from the first source in the list of sources given
@@ -88,7 +89,7 @@ ChromecastSessionManager = Class.extend({
          // We cannot simply get `type` from `player.getCurrentType()` because it also
          // uses `this.cache_.currentSource`.
          src: player.src(),
-      });
+      });*/
 
       player.ready(function() {
          if (wasPaused) {

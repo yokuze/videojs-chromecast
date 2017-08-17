@@ -104,6 +104,7 @@ ChromecastTech = {
                this.triggerReady();
             }
             this.trigger('loadstart');
+            this.trigger('loadeddata');
             this.trigger('play');
             this.trigger('playing');
             this._hasPlayedAnyItem = true;
@@ -214,6 +215,10 @@ ChromecastTech = {
    },
 
    setAutoplay: function() {
+      // Not supported
+   },
+
+   load: function() {
       // Not supported
    },
 
