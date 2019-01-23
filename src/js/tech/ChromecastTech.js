@@ -352,16 +352,13 @@ ChromecastTech = {
     * {@link https://developer.mozilla.org/en-US/docs/Web/API/TimeRanges|TimeRanges}
     * object that represents the portions of the current media item that have been
     * buffered. However, the Chromecast API does not currently provide a way to determine
-    * how much the media item has buffered, so we always return `undefined`.
+    * how much the media item has buffered, so we always return empty `TimeRanges`.
     *
-    * Returning `undefined` is safe: the player will simply not display the buffer amount
-    * indicator in the scrubber UI.
-    *
-    * @returns {undefined} always returns `undefined`
+    * @returns {TimeRanges} always returns empty `TimeRanges`
     * @see {@link http://docs.videojs.com/Player.html#buffered}
     */
    buffered: function() {
-      return undefined;
+      return this.videojs.createTimeRanges();
    },
 
    /**
@@ -436,6 +433,16 @@ ChromecastTech = {
    },
 
    /**
+    * `Tech` must implement this function. However, since the Chromecast framework has no
+    * API method for us to know the duration of the item and what part(s) of the item is
+    * seekable, we must always return an infinite time range.
+    */
+   seekable: function() {
+      // TODO check if we are using HLS and return 0, POSITIVE_INFINITY;
+      return this.videojs.createTimeRanges();
+   },
+
+   /**
     * Gets the Chromecast equivalent of HTML5 Media Element's `readyState`.
     *
     * @see https://developer.mozilla.org/en-US/docs/Web/API/HTMLMediaElement/readyState
@@ -445,6 +452,64 @@ ChromecastTech = {
          return 0; // HAVE_NOTHING
       }
       return 4;
+   },
+
+   /**
+    * Does nothing. Fullscreen mode is not applicable to Chromecast.
+    */
+   enterFullScreen: function() {
+      // Not supported
+   },
+
+   /**
+    * Does nothing. Fullscreen mode is not applicable to Chromecast.
+    */
+   exitFullScreen: function() {
+      // Not supported
+   },
+
+   /**
+    * Always returns `false`. Changing the loop mode is not supported.
+    */
+   loop: function() {
+      // Not supported
+      return false;
+   },
+
+   /**
+    * Does nothing. Changing the loop mode is not supported.
+    */
+   setLoop: function() {
+      // Not supported
+   },
+
+   /**
+    * Does nothing. Chromecast automatically begins loading the media item as soon as
+    * casting begins.
+    */
+   preload: function() {
+      // Not supported
+   },
+
+   /**
+    * Does nothing.
+    */
+   setControls: function() {
+      // Not supported
+   },
+
+   /**
+    * Always returns `1`. Changing the playback rate is not supported.
+    */
+   defaultPlaybackRate: function() {
+      return 1;
+   },
+
+   /**
+   * Does nothing. Changing the playback rate is not supported.
+   */
+   setDefaultPlaybackRate: function() {
+      // Not supported
    },
 
    /**
